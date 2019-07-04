@@ -32,12 +32,49 @@ var budgetController = (function() {
 //UI Controller
 var UIController = (function() {
     //Some code here
+    return {
+        getInput: function() {
+            var type = document.querySelector('.add__type').value; //will be either inc or exp
+            var description = document.querySelector('.add__description').value;
+            var value = document.querySelector('.add__value').value;
+            
+        }
+    }
 
 })();
 
 
 //here both modules are independent and this havee communicate with the data hence another module comes to the picture
 //it takes arguments to communicate between those TWO
+
+//Global App Controller
 var controller = (function(budgetCtrl, UICtrl) {
+
+    //Third
+    var ctrlAddItem = function() {
+        //1. Get the field input data
+
+        //2. Add the item to th Budget Controller
+
+        //3. Add the item to the UI
+
+        //4. Calculate the Budget
+
+        //5.Update it in UI
+        console.log('It works');
+    }
+
+    //First Task; Event Handler
+    //ctrlAddItem is named function, ther is no need to call it bcoz once the event triggers the function should perform  
+    document.querySelector('.add__btn').addEventListener('click', ctrlAddItem);
+
+    //Second
+    //this is bcoz when the user enters ENTER also it should perform the same function
+    document.addEventListener('keypress', function(event) {
+        if(event.keyCode === 13 || event.which === 13) {//keyCode is a property of event occured in document where as older browsers cannot recognise the KEYCODE property and they use WHICH property
+            ctrlAddItem();
+        }
+
+    })
 
 })(budgetController, UIController);
