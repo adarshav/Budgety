@@ -32,13 +32,26 @@ var budgetController = (function() {
 //UI Controller
 var UIController = (function() {
     //Some code here
+    //names or class names in UI once gets change, And that class name should b replaced its a laborious process hence create an Object with series of class names and play around it
+    var DOMStrings = {
+        inputType: '.add__type',
+        inputDescription: '.add__description',
+        inputValue: '.add__value',
+        inputBtn:'.add__btn'//this BTN is in controller module to available here it is sent through parameters
+    } 
     return {
         getInput: function() {
-            var type = document.querySelector('.add__type').value; //will be either inc or exp
-            var description = document.querySelector('.add__description').value;
-            var value = document.querySelector('.add__value').value;
+
+            return {
+                type:document.querySelector(DOMStrings.inputType).value, //will be either inc or exp
+                description:document.querySelector(DOMStrings.inputDescription).value,
+                value:document.querySelector(DOMStrings.inputValue).value
+            };
             
-        }
+        },
+        getDomStrings:function() {
+            return DOMStrings;
+        }//this is the process of sending method as parameter to another module
     }
 
 })();
@@ -50,10 +63,29 @@ var UIController = (function() {
 //Global App Controller
 var controller = (function(budgetCtrl, UICtrl) {
 
+    var setUpEventListeners = function() {//this is just to structure the code
+
+        var Dom = UICtrl.getDomStrings();
+
+        //First Task; Event Handler
+        //ctrlAddItem is named function, ther is no need to call it bcoz once the event triggers the function should perform  
+        document.querySelector(Dom.inputBtn).addEventListener('click', ctrlAddItem);
+
+        //Second
+        //this is bcoz when the user enters ENTER also it should perform the same function
+        document.addEventListener('keypress', function(event) {
+        if(event.keyCode === 13 || event.which === 13) {//keyCode is a property of event occured in document where as older browsers cannot recognise the KEYCODE property and they use WHICH property
+            ctrlAddItem();
+        }
+        });
+
+    };
+
     //Third
     var ctrlAddItem = function() {
         //1. Get the field input data
-
+        var input = UICtrl.getInput();
+        console.log(input);
         //2. Add the item to th Budget Controller
 
         //3. Add the item to the UI
@@ -61,20 +93,16 @@ var controller = (function(budgetCtrl, UICtrl) {
         //4. Calculate the Budget
 
         //5.Update it in UI
-        console.log('It works');
+
     }
 
-    //First Task; Event Handler
-    //ctrlAddItem is named function, ther is no need to call it bcoz once the event triggers the function should perform  
-    document.querySelector('.add__btn').addEventListener('click', ctrlAddItem);
-
-    //Second
-    //this is bcoz when the user enters ENTER also it should perform the same function
-    document.addEventListener('keypress', function(event) {
-        if(event.keyCode === 13 || event.which === 13) {//keyCode is a property of event occured in document where as older browsers cannot recognise the KEYCODE property and they use WHICH property
-            ctrlAddItem();
+    return{
+        init:function() {
+            console.log('Application has started..');
+            setUpEventListeners();
         }
-
-    })
+    }
 
 })(budgetController, UIController);
+
+controller.init();//function call to the event listeners
