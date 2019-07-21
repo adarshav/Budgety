@@ -25,6 +25,55 @@
 //Budget Controller
 var budgetController = (function() {
     //code starts
+    //Fourth
+    var Expense = function(id, description, value) {
+        this.id =  id;
+        this.description = description;
+        this.value = value;
+    };//it is a function constructor whose name starts with capital
+
+    var Income = function(id, description, value) {
+        this.id = id;
+        this.description = description;
+        this.value = value;
+    }
+
+    //data structure to store the incomes and expenses 
+    var data = {
+        allItems: {
+            exp:[],
+            inc:[]
+        },
+        totals: {
+            exp:0,
+            inc:0
+        }
+    }
+
+    return {
+        addItem: function(type, des, val) {
+            var newItem, ID;
+            //create new id
+            if(data.allItems[type].length > 0) {
+                ID = data.allItems[type][data.allItems[type].length - 1].id + 1;
+            } else {
+                ID = 0;
+            }
+            //create new item based on 'inc' and 'exp'
+            if(type === 'exp') {
+                newItem = new Expense(ID, des, val);
+            } else if(type === 'inc') {
+                newItem = new Income(ID, des, val);
+            }
+            //push the new item to the list or data structure
+            data.allItems[type].push(newItem);
+            //return the newItem
+            return newItem;
+        },
+        testing:function() {
+            console.log(data);
+        }
+    };
 
 })();//this is the synatax of iife 
 
@@ -48,6 +97,15 @@ var UIController = (function() {
                 value:document.querySelector(DOMStrings.inputValue).value
             };
             
+        },
+
+        addListItem: function(obj, type) {
+            //1.Create the HTML string with placeholder text
+
+            //2.Replace the placeholder text with actual data
+
+            //3.Insert the HTML into DOM
+
         },
         getDomStrings:function() {
             return DOMStrings;
@@ -83,11 +141,12 @@ var controller = (function(budgetCtrl, UICtrl) {
 
     //Third
     var ctrlAddItem = function() {
+        var input, newItem;
         //1. Get the field input data
-        var input = UICtrl.getInput();
+        input = UICtrl.getInput();
         console.log(input);
         //2. Add the item to th Budget Controller
-
+        newItem = budgetCtrl.addItem(input.type, input.description, input.value);
         //3. Add the item to the UI
 
         //4. Calculate the Budget
